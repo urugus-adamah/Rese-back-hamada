@@ -9,7 +9,7 @@ use App\Models\Reservation;
 
 class ShopsController extends Controller
 {
-    public function getShops(Request $request)
+    public function getShops()
     {
         $items = Shop::all();
         if (count($items) > 0 ) {
@@ -17,6 +17,7 @@ class ShopsController extends Controller
                 'message'=>'Shops goted successfully',
                 'data'=>$items,
             ],200);
+            //エリアとジャンルの情報といいねの情報を取得（リレーションつかう）
         } else {
             return response()->json([
                 'message' => 'Not found',
@@ -26,7 +27,8 @@ class ShopsController extends Controller
 
     public function getShop($id)
     {
-        $item = Shop::where('id',$id)->first();
+        // $item = Shop::where('id',$id)->first();
+        $item = Shop::find($id);
         if ($item) {
             return response()->json([
                 'message' => 'Shop goted successfully',
@@ -41,19 +43,16 @@ class ShopsController extends Controller
 
     public function putFavorites(Request $request, $shop_id)
     {
-        $items = Favorite::where('shop_id',$shop_id)
+        $item = Favorite::where('shop_id',$shop_id)
             ->where('user_id',$request->user_id)
             ->first(); 
 
-        if ($items<>null) {
+        if (is_null($item)) {
             return response()->json([
                 'message' => 'Favorites have already been added',
             ], 404); 
         } else {
-            $item = new Favorite();
-            $item->user_id = $request->user_id;
-            $item->shop_id = $shop_id;
-            $item->save();
+            $item = Favorite::create(['user_id'=>$request->user_id,'shop_id'=>$request->shop_id]);
             return response()->json([
                 'message' => 'Favorite added successfully',
                 'data' => $item,
@@ -79,12 +78,12 @@ class ShopsController extends Controller
 
     public function postReservations(Request $request, $shop_id)
     {
-        $item = new Reservation();
-        $item->num_of_users = $request->num_of_users;
-        $item->date_time = $request->date_time;
-        $item->user_id = $request->user_id;
-        $item->shop_id = $shop_id;
-        $item->save();
+        $item = Reservation::create([
+            'num_of_users'=>$request->num_of_users,
+            'date_time'=> $request->date_time,
+            'user_id' => $request->user_id,
+            'shop_id' => $shop_id,
+        ]);
         return response()->json([
             'message'=>'Reservation created successfully',
             'data'=> $item,
@@ -97,7 +96,7 @@ class ShopsController extends Controller
             ->where('id', $reservation_id)
             ->first();
             
-        if ($items<>null) {
+        if (is_null($items)) {
             Reservation::destroy($reservation_id);
             return response()->json([
                 'message' => 'Rservations deleted successfully',

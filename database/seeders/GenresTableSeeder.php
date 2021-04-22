@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Genre;
 
 class GenresTableSeeder extends Seeder
 {
@@ -14,29 +14,23 @@ class GenresTableSeeder extends Seeder
      */
     public function run()
     {
-        $param = [
-            'name' => '寿司',
-        ];
-        DB::table('genres')->insert($param);
+        Genre::insert([
+            'name' => '寿司'
+        ]);
 
-        $param = [
-            'name' => '焼肉',
-        ];
-        DB::table('genres')->insert($param);
+        Genre::insert([
+            'name' => '焼肉'
+        ]);
 
-        $param = [
-            'name' => '居酒屋',
-        ];
-        DB::table('genres')->insert($param);
+        Genre::insert([
+            'name' => '居酒屋'
+        ]);
 
-        $param = [
-            'name' => 'イタリアン',
-        ];
-        DB::table('genres')->insert($param);
-        
-        $param = [
-            'name' => 'ラーメン',
-        ];
-        DB::table('genres')->insert($param);
+        Genre::insert([
+            'name' => 'イタリアン'
+        ]);
+        Genre::insert([
+            'name' => 'ラーメン'
+        ]);
     }
 }

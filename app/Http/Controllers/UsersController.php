@@ -5,21 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Favorite;
+use App\Models\Reservation;
 
 class UsersController extends Controller
 {
-    public function getUser(Request $request){
-        $items = User::where('id', $request->id)->first();
+    public function getUser(Request $request)
+    {
+        $item = User::find($request->id);
 
-        if ($items<>null) {
+        if (is_null($item)) {
             return response()->json([
                 'messate' => 'User got successfully',
-                'data' => $items,
+                'data' => $item,
             ], 200);
         } else {
             return response()->json([
                 'messate' => 'No user was found',
-                'data' => $items,
+                'data' => $item,
             ], 404);
         }
     }
@@ -34,14 +36,14 @@ class UsersController extends Controller
             ], 200);
         } else {
             return response()->json([
-                'message' => 'Not fount'
+                'message' => 'Not found'
             ],404);
         }
     }
 
     public function getReservations($user_id)
     {
-        $items = Favorite::where('user_id', $user_id)->get();
+        $items = Reservation::where('user_id', $user_id)->get();
         if (count($items) > 0) {
             return response()->json([
                 'message' => 'Reservations got successfully',
@@ -49,7 +51,7 @@ class UsersController extends Controller
             ], 200);
         } else {
             return response()->json([
-                'message' => 'Not fount'
+                'message' => 'Not found'
             ], 404);
         }
     }

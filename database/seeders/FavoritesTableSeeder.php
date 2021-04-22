@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Favorite;
 
 class FavoritesTableSeeder extends Seeder
 {
@@ -18,12 +18,12 @@ class FavoritesTableSeeder extends Seeder
             'user_id' => 1,
             'shop_id' => 1,
         ];
-        DB::table('favorites')->insert($param);
+        Favorite::insert($param);
 
         $param = [
             'user_id' => 1,
             'shop_id' => 2,
         ];
-        DB::table('favorites')->insert($param);
+        Favorite::insert($param);
     }
 }

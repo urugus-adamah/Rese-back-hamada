@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Reservation;
 
 class ReservationsTableSeeder extends Seeder
 {
@@ -20,7 +20,7 @@ class ReservationsTableSeeder extends Seeder
             'user_id' => 1,
             'shop_id' => 1,
         ];
-        DB::table('reservations')->insert($param);
+        Reservation::insert($param);
 
         $param = [
             'num_of_users' => 3,
@@ -28,7 +28,7 @@ class ReservationsTableSeeder extends Seeder
             'user_id' => 1,
             'shop_id' => 2,
         ];
-        DB::table('reservations')->insert($param);
+        Reservation::insert($param);
 
         $param = [
             'num_of_users' => 100,
@@ -36,7 +36,7 @@ class ReservationsTableSeeder extends Seeder
             'user_id' => 1,
             'shop_id' => 1,
         ];
-        DB::table('reservations')->insert($param);
+        Reservation::insert($param);
 
         $param = [
             'num_of_users' => 2,
@@ -44,6 +44,6 @@ class ReservationsTableSeeder extends Seeder
             'user_id' => 2,
             'shop_id' => 1,
         ];
-        DB::table('reservations')->insert($param);
+        Reservation::insert($param);
     }
 }
