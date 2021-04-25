@@ -13,6 +13,11 @@ class ShopsController extends Controller
     {
         $items = Shop::all();
         if (count($items) > 0 ) {
+            foreach ($items as $item) {
+                $item->area->name;
+                $item->genre;
+                $item->favorites;
+            }
             return response()->json([
                 'message'=>'Shops goted successfully',
                 'data'=>$items,
@@ -27,9 +32,12 @@ class ShopsController extends Controller
 
     public function getShop($id)
     {
-        // $item = Shop::where('id',$id)->first();
+        //エリアとジャンルの情報といいねの情報を取得（リレーションつかう）
         $item = Shop::find($id);
         if ($item) {
+            $item->area->name;
+            $item->genre->name;
+            $item->favorites;
             return response()->json([
                 'message' => 'Shop goted successfully',
                 'data' => $item,
@@ -48,15 +56,16 @@ class ShopsController extends Controller
             ->first(); 
 
         if (is_null($item)) {
-            return response()->json([
-                'message' => 'Favorites have already been added',
-            ], 404); 
-        } else {
-            $item = Favorite::create(['user_id'=>$request->user_id,'shop_id'=>$request->shop_id]);
+            $item = Favorite::create(['user_id' => $request->user_id, 'shop_id' => $request->shop_id]);
             return response()->json([
                 'message' => 'Favorite added successfully',
                 'data' => $item,
             ], 200);
+            
+        } else {
+            return response()->json([
+                'message' => 'Favorites have already been added',
+            ], 404); 
         }
     }
 

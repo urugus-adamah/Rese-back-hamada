@@ -25,5 +25,17 @@ class FavoritesTableSeeder extends Seeder
             'shop_id' => 2,
         ];
         Favorite::insert($param);
+        
+        $param = [
+            'user_id' => 2,
+            'shop_id' => 2,
+        ];
+        Favorite::insert($param);
+        
+        $param = [
+            'user_id' => 3,
+            'shop_id' => 2,
+        ];
+        Favorite::insert($param);
     }
 }
