@@ -11,7 +11,8 @@ class Shop extends Model
 
     public function favorites()
     {
-        return $this->hasMany(Favorite::class);
+        // return $this->hasMany(Favorite::class);
+        return $this->belongsToMany(Favorite::class);
     }
 
     public function area()

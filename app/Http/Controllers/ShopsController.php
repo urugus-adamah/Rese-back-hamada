@@ -15,8 +15,8 @@ class ShopsController extends Controller
         if (count($items) > 0 ) {
             foreach ($items as $item) {
                 $item->area->name;
-                $item->genre;
-                $item->favorites;
+                $item->genre->name;
+                $item->favorites();
             }
             return response()->json([
                 'message'=>'Shops goted successfully',
@@ -37,7 +37,7 @@ class ShopsController extends Controller
         if ($item) {
             $item->area->name;
             $item->genre->name;
-            $item->favorites;
+            $item->favorites();
             return response()->json([
                 'message' => 'Shop goted successfully',
                 'data' => $item,
@@ -56,11 +56,14 @@ class ShopsController extends Controller
             ->first(); 
 
         if (is_null($item)) {
-            $item = Favorite::create(['user_id' => $request->user_id, 'shop_id' => $request->shop_id]);
+            $item = Favorite::create([
+                'user_id' => $request->user_id,
+                 'shop_id' => $request->shop_id
+            ]);
             return response()->json([
                 'message' => 'Favorite added successfully',
                 'data' => $item,
-            ], 200);
+            ], 201);
             
         } else {
             return response()->json([
@@ -105,7 +108,7 @@ class ShopsController extends Controller
             ->where('id', $reservation_id)
             ->first();
             
-        if (is_null($items)) {
+        if (isset($items)) {
             Reservation::destroy($reservation_id);
             return response()->json([
                 'message' => 'Rservations deleted successfully',

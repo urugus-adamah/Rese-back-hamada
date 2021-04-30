@@ -13,7 +13,7 @@ class UsersController extends Controller
     {
         $item = User::find($request->id);
 
-        if (is_null($item)) {
+        if (isset($item)) {
             return response()->json([
                 'messate' => 'User got successfully',
                 'data' => $item,
