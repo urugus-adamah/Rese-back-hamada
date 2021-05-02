@@ -11,18 +11,16 @@ class ShopsController extends Controller
 {
     public function getShops()
     {
-        $items = Shop::all();
+        $items = Shop::with(['area', 'genre'])->get();
         if (count($items) > 0 ) {
             foreach ($items as $item) {
-                $item->area->name;
-                $item->genre->name;
-                $item->favorites();
+                foreach ($item->favorites as $favorite) {
+                }
             }
             return response()->json([
-                'message'=>'Shops goted successfully',
-                'data'=>$items,
+                'message' => 'Shops goted successfully',
+                'data' => $items,
             ],200);
-            //エリアとジャンルの情報といいねの情報を取得（リレーションつかう）
         } else {
             return response()->json([
                 'message' => 'Not found',
@@ -32,12 +30,10 @@ class ShopsController extends Controller
 
     public function getShop($id)
     {
-        //エリアとジャンルの情報といいねの情報を取得（リレーションつかう）
-        $item = Shop::find($id);
-        if ($item) {
-            $item->area->name;
-            $item->genre->name;
-            $item->favorites();
+        $item = Shop::with(['area', 'genre'])->find($id);
+        if (isset($item)) {
+            foreach ($item->favorites as $favorite) {
+            }
             return response()->json([
                 'message' => 'Shop goted successfully',
                 'data' => $item,
@@ -51,8 +47,8 @@ class ShopsController extends Controller
 
     public function putFavorites(Request $request, $shop_id)
     {
-        $item = Favorite::where('shop_id',$shop_id)
-            ->where('user_id',$request->user_id)
+        $item = Favorite::where('shop_id', $shop_id)
+            ->where('user_id', $request->user_id)
             ->first(); 
 
         if (is_null($item)) {
@@ -91,14 +87,14 @@ class ShopsController extends Controller
     public function postReservations(Request $request, $shop_id)
     {
         $item = Reservation::create([
-            'num_of_users'=>$request->num_of_users,
-            'date_time'=> $request->date_time,
+            'num_of_users' => $request->num_of_users,
+            'date_time' => $request->date_time,
             'user_id' => $request->user_id,
             'shop_id' => $shop_id,
         ]);
         return response()->json([
-            'message'=>'Reservation created successfully',
-            'data'=> $item,
+            'message' => 'Reservation created successfully',
+            'data' => $item,
         ],200);
     }
 
