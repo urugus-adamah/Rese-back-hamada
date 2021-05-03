@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+
 class LogoutController extends Controller
 {
     public function post()
     {
-        return response()->json(['auth'=>false],200);
+        $user = new User();
+        return $user->logout();
     }
 }

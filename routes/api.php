@@ -34,4 +34,4 @@ Route::get('/v1/shops/{id}',[ShopsController::class,'getShop']);
 Route::put('/v1/shops/{shop_id}/favorites',[ShopsController::class, 'putFavorites']);
 Route::delete('/v1/shops/{shop_id}/favorites',[ShopsController::class, 'deleteFavorites']);
 Route::post('/v1/shops/{shop_id}/reservations',[ShopsController::class,'postReservations']);
-Route::delete('/v1/shops/{shop_id}/reservations/{reservation_id}',[ShopsController::class,'deleteRservatons']);
+Route::delete('/v1/shops/{shop_id}/reservations/{reservation_id}',[ShopsController::class,'deleteReservations']);

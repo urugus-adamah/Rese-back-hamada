@@ -3,116 +3,49 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Shop;
 use App\Models\Favorite;
 use App\Models\Reservation;
+use App\Models\Shop;
 
 class ShopsController extends Controller
 {
+    private $shop;
+    private $favorite;
+    private $reservation;
+    public function __construct()
+    {
+        $this->shop = new Shop();
+        $this->favorite = new Favorite();
+        $this->reservation = new Reservation();
+    }
+
     public function getShops()
     {
-        $items = Shop::with(['area', 'genre'])->get();
-        if (count($items) > 0 ) {
-            foreach ($items as $item) {
-                foreach ($item->favorites as $favorite) {
-                }
-            }
-            return response()->json([
-                'message' => 'Shops goted successfully',
-                'data' => $items,
-            ],200);
-        } else {
-            return response()->json([
-                'message' => 'Not found',
-            ], 404);
-        }
+        return $this->shop->getShops();
     }
-
     public function getShop($id)
     {
-        $item = Shop::with(['area', 'genre'])->find($id);
-        if (isset($item)) {
-            foreach ($item->favorites as $favorite) {
-            }
-            return response()->json([
-                'message' => 'Shop goted successfully',
-                'data' => $item,
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'Not found',
-            ], 404);
-        }
+        return $this->shop->getShop($id);
     }
-
     public function putFavorites(Request $request, $shop_id)
     {
-        $item = Favorite::where('shop_id', $shop_id)
-            ->where('user_id', $request->user_id)
-            ->first(); 
-
-        if (is_null($item)) {
-            $item = Favorite::create([
-                'user_id' => $request->user_id,
-                 'shop_id' => $request->shop_id
-            ]);
-            return response()->json([
-                'message' => 'Favorite added successfully',
-                'data' => $item,
-            ], 201);
-            
-        } else {
-            return response()->json([
-                'message' => 'Favorites have already been added',
-            ], 404); 
-        }
+        return $this->favorite->put($request->user_id, $shop_id);
     }
-
     public function deleteFavorites(Request $request, $shop_id)
     {
-        $items = Favorite::where('shop_id', $shop_id)
-            ->where('user_id', $request->user_id)->delete();
-            
-        if ($items) {
-            return response()->json([
-                'message' => 'Favorite deleted successfully',
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'Not found',
-            ], 404);
-        }   
+        return $this->favorite->deleteFavorites($request->user_id, $shop_id);
     }
-
     public function postReservations(Request $request, $shop_id)
     {
-        $item = Reservation::create([
-            'num_of_users' => $request->num_of_users,
-            'date_time' => $request->date_time,
-            'user_id' => $request->user_id,
-            'shop_id' => $shop_id,
-        ]);
-        return response()->json([
-            'message' => 'Reservation created successfully',
-            'data' => $item,
-        ],200);
+        return $this->reservation->post(
+            $request->num_of_users, 
+            $request->date_time, 
+            $request->user_id, 
+            $shop_id
+        );
     }
-
-    public function deleteRservatons($shop_id, $reservation_id)
+    public function deleteReservations($shop_id, $reservation_id)
     {
-        $items = Reservation::where('shop_id', $shop_id)
-            ->where('id', $reservation_id)
-            ->first();
-            
-        if (isset($items)) {
-            Reservation::destroy($reservation_id);
-            return response()->json([
-                'message' => 'Rservations deleted successfully',
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'Rservations was not found',
-            ], 404);
-        }
+        return $this->reservation->deleteReservations($shop_id, $reservation_id);
     }
 }

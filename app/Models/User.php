@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -40,4 +41,52 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getUser($id)
+    {
+        $item = User::find($id);
+
+        if (isset($item)) {
+            return response()->json([
+                'messate' => 'User got successfully',
+                'data' => $item,
+            ], 200);
+        } else {
+            return response()->json([
+                'messate' => 'No user was found',
+                'data' => $item,
+            ], 404);
+        }
+    }
+    public function registUser($password, $name, $email)
+    {
+        $hashed_password=Hash::make($password);
+        $item = User::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => $hashed_password,
+        ]);
+        return response()->json([
+            'message' =>'User created successfully',
+            'data' => $item
+        ],201);
+    }
+    public function login($email, $password)
+    {
+        $item = User::where('email', $email)->first();
+        $is_checked = Hash::check($password, $item->password);
+        if ($is_checked) {
+            return response()->json([
+                'auth' => true
+            ], 200);
+        } else {
+            return response()->json([
+                'auth' => false
+            ], 401);
+        }
+    }
+    public function logout()
+    {
+        return response()->json(['auth' => false], 200);
+    }
 }
