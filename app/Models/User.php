@@ -42,18 +42,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getUser($id)
+    public static function getUser($id)
     {
         $item = User::find($id);
 
         if (isset($item)) {
             return response()->json([
-                'messate' => 'User got successfully',
+                'message' => 'User got successfully',
                 'data' => $item,
             ], 200);
         } else {
             return response()->json([
-                'messate' => 'No user was found',
+                'message' => 'No user was found',
                 'data' => $item,
             ], 404);
         }

@@ -12,7 +12,7 @@ class Favorite extends Model
         'user_id',
         'shop_id'
     ];
-    public function get($user_id)
+    public static function get($user_id)
     {
         $items = Favorite::where('user_id', $user_id)->get();
         if (count($items) > 0) {
@@ -26,7 +26,7 @@ class Favorite extends Model
             ], 404);
         }
     }
-    public function put($user_id, $shop_id)
+    public static function put($user_id, $shop_id)
     {
         $item = Favorite::where('shop_id', $shop_id)
             ->where('user_id', $user_id)
@@ -47,7 +47,7 @@ class Favorite extends Model
             ], 404);
         }
     }
-    public function deleteFavorites($user_id, $shop_id)
+    public static function deleteFavorites($user_id, $shop_id)
     {
         $items = Favorite::where('shop_id', $shop_id)
             ->where('user_id', $user_id)->delete();
