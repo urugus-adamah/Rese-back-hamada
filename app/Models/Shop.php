@@ -30,15 +30,8 @@ class Shop extends Model
 
     public static function getShops()
     {
-        // DB::enableQueryLog();
-        $items = Shop::with(['area', 'genre'])->get();
-        // $items = Shop::all();
-        // dd(DB::getQueryLog());
+        $items = Shop::with(['area', 'genre','favorites'])->get();
         if (count($items) > 0) {
-            foreach ($items as $item) {  
-                foreach ($item->favorites as $favorite) {
-                }
-            }
                 return response()->json([
                     'message' => 'Shops goted successfully',
                     'data' => $items,
@@ -52,10 +45,8 @@ class Shop extends Model
         
         public static function getShop($id)
         {
-            $item = Shop::with(['area', 'genre'])->find($id);
+            $item = Shop::with(['area', 'genre','favorites'])->find($id);
             if (isset($item)) {
-                foreach ($item->favorites as $favorite) {
-                }
             return response()->json([
                 'message' => 'Shop goted successfully',
                 'data' => $item,

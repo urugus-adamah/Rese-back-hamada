@@ -18,7 +18,7 @@ class ShopsTableSeeder extends Seeder
 
     public function run()
     {
-        Shop::factory()->count(10000)->create();
+        Shop::factory()->count(1000)->create();
         // $shop = Shop::factory()->count(10000)->for($genre)->create();
         // $param = [
         //     'name' => '牛助',
