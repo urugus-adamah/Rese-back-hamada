@@ -12,9 +12,27 @@ class Favorite extends Model
         'user_id',
         'shop_id'
     ];
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
+    }
+    public function genre()
+    {
+        return $this->belongsTo(Genre::class);
+    }
+
     public static function get($user_id)
     {
-        $items = Favorite::where('user_id', $user_id)->get();
+        // $items = Favorite::where('user_id', $user_id)->get();
+        $items = Favorite::with(['shop', 'user', 'shop.area', 'shop.genre'])->where('user_id', $user_id)->get();
         if (count($items) > 0) {
             return response()->json([
                 'message' => 'Favorites got successfully',

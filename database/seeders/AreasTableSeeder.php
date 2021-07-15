@@ -14,18 +14,18 @@ class AreasTableSeeder extends Seeder
      */
     public function run()
     {
-        Area::factory()->count(4)->create();
-        // $param = [
-        //     'name' => '東京都',
-        // ];
-        // Area::insert($param);
-        // $param = [
-        //     'name' => '大阪府',
-        // ];
-        // Area::insert($param);
-        // $param = [
-        //     'name' => '福岡県',
-        // ];
-        // Area::insert($param);
+        // Area::factory()->count(4)->create();
+        $param = [
+            'name' => '東京都',
+        ];
+        Area::insert($param);
+        $param = [
+            'name' => '大阪府',
+        ];
+        Area::insert($param);
+        $param = [
+            'name' => '福岡県',
+        ];
+        Area::insert($param);
     }
 }

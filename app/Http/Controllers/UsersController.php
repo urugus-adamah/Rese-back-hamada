@@ -9,6 +9,10 @@ use App\Models\User;
 
 class UsersController extends Controller
 {
+    public function get()
+    {
+        return User::get(); 
+    }
     public function getUser(Request $request)
     {
         return User::getUser($request->id); 
@@ -21,5 +25,9 @@ class UsersController extends Controller
     {
         return Reservation::get($user_id);
     }
-
+    
+    public function putUser(Request $request, $user_id)
+    {
+        return User::put($request->name,$request->email,$request->password,$user_id);
+    }
 }

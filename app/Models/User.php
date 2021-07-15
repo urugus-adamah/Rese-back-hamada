@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -41,7 +42,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public static function get()
+    {
+        $items = User::all();
+        if (isset($items)) {
 
+            return response()->json([
+                'message' => 'User got successfully',
+                'data' => $items,
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'No user was found',
+                'data' => $items,
+            ], 404);
+        }
+    }
     public static function getUser($id)
     {
         $item = User::find($id);
@@ -71,6 +87,27 @@ class User extends Authenticatable
             'data' => $item
         ],201);
     }
+    // public static function put($name, $email, $password, $id)
+    // {
+    //     $hashed_password=Hash::make($password);
+    //     $item = User::find($id);
+    //     if($item){
+    //         $item->name = $name;
+    //         $item->email = $email;
+    //         $item->password = $hashed_password;
+    //         $item->save();
+    //         return response()->json([
+    //             'message' =>'User updated successfully',
+    //             'data' => $item
+    //         ],201);
+    //     }else{
+    //         return response()->json([
+    //             'message' => 'No user was found',
+    //             'data' => $item
+    //         ], 404);
+    //     }
+    // }
+
     public function login($email, $password)
     {
         $item = User::where('email', $email)->first();

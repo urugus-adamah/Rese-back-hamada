@@ -9,10 +9,18 @@ class Reservation extends Model
 {
     use HasFactory;
     protected $fillable = ['num_of_users','date_time','user_id','shop_id'];
-
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public static function get($user_id)
     {
-        $items = Reservation::where('user_id', $user_id)->get();
+        // $items = Reservation::where('user_id', $user_id)->get();
+        $items = Reservation::with(['shop', 'user'])->where('user_id', $user_id)->get();
         if (count($items) > 0) {
             return response()->json([
                 'message' => 'Reservations got successfully',
